@@ -1,0 +1,49 @@
+{
+  "agents": [
+    { "id": "arch",  "name": "System Architect",     "role": "architect"   },
+    { "id": "sec",   "name": "Security Engineer",     "role": "security"    },
+    { "id": "perf",  "name": "Performance Engineer",  "role": "performance" },
+    { "id": "kiss",  "name": "Simplicity Advocate",   "role": "kiss"        }
+  ],
+
+  "judge": {
+    "id": "judge",
+    "name": "Technical Judge",
+    "role": "generalist",
+    "extra_instructions": ""
+  },
+
+  "convergence": {
+    "max_rounds": 6,
+    "judge_threshold": 0.80,
+    "criteria": "Proposals have converged when the refinements across agents are substantially aligned, no agent is raising fundamental unresolved objections, and the solution is comprehensive enough to act on."
+  },
+
+  "clarifications": {
+    "enabled": true,
+    "max_iterations_per_agent": 3
+  },
+
+  "tools": [
+    {
+      "name": "web_search",
+      "description": "Search the web for documentation, benchmarks, RFCs, and current best practices"
+    },
+    {
+      "name": "file_read",
+      "description": "Read files from the context/ directory or previous round contributions from the debate/ directory"
+    }
+  ],
+
+  "agents_config": {
+    "sec": {
+      "tool_hints": "Use web_search to look up CVE databases, OWASP documentation, and known vulnerabilities relevant to the problem."
+    },
+    "arch": {
+      "tool_hints": "Use web_search to find reference architectures and real-world implementations of patterns you propose."
+    },
+    "perf": {
+      "tool_hints": "Use web_search to find real benchmark data and latency/throughput figures relevant to your recommendations."
+    }
+  }
+}
