@@ -100,6 +100,7 @@ Edit `debate-config.json` (workspace copy or the project default) to change:
 - **`agents_config`**: per-agent tool hints
 
 See `debate-config.json` for the full example with all fields documented.
+For a full field-by-field reference and behavior details, see `docs/configuration.md`.
 
 ## Prompt Customization
 
