@@ -25,7 +25,7 @@ MAX = CONFIG.clarifications.max_iterations_per_agent
 
 LOOP:
   1. Dispatch role-clarify subagent (via Task tool):
-     - Read skill: {PROJECT}/skills/role-clarify.SKILL.md
+     - Read skill: {PROJECT}/.cursor/skills/role-clarify/SKILL.md
      - Pass parameters: AGENT_ID, AGENT_NAME, ROLE, WORKSPACE, PROJECT, CONTEXT_FILES
 
   2. Wait for subagent to complete.

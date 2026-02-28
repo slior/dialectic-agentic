@@ -286,7 +286,7 @@ A single JSON file controls debate behavior. It focuses exclusively on debate se
 
 ## 6. Debate Flow
 
-The orchestrator follows this algorithm, encoded in `skills/orchestrate.SKILL.md`:
+The orchestrator follows this algorithm, encoded in `.cursor/skills/orchestrate/SKILL.md`:
 
 ```
 1. READ problem.md and debate-config.json (workspace override or project default)
@@ -363,7 +363,7 @@ From round 2 onward, each role agent reads its own previous refinement and uses 
 
 ## 7. Skill Files
 
-### 7.1 `skills/orchestrate.SKILL.md`
+### 7.1 `.cursor/skills/orchestrate/SKILL.md`
 
 **Purpose**: Entry point. The user (or an invoking agent) reads and follows this skill to run a debate.
 
@@ -383,7 +383,7 @@ From round 2 onward, each role agent reads its own previous refinement and uses 
 - How to interpret `verdict.json` and decide whether to continue
 - How to handle a missing output file (subagent failure): retry once, then skip with a warning logged to `progress.md`
 
-### 7.2 `skills/role-agent.SKILL.md`
+### 7.2 `.cursor/skills/role-agent/SKILL.md`
 
 **Purpose**: Executed by a subagent for a specific role in a specific phase.
 
@@ -429,7 +429,7 @@ From round 2 onward, each role agent reads its own previous refinement and uses 
 
 **Role persona loading**: the skill instructs the subagent to read `prompts/<role>.md` and treat its content as its system-level identity for the duration of the task.
 
-### 7.3 `skills/judge.SKILL.md`
+### 7.3 `.cursor/skills/judge/SKILL.md`
 
 **Purpose**: Evaluates convergence after each round and writes the final synthesis.
 
@@ -674,7 +674,7 @@ The one adaptation: the TypeScript prompts include function-based templates (`pr
    # edit as needed
 
 6. Invoke the orchestrator skill in your agent:
-   "Read and follow the skill at /path/to/dialectic-agent/skills/orchestrate.SKILL.md.
+   "Read and follow the skill at /path/to/dialectic-agent/.cursor/skills/orchestrate/SKILL.md.
     The debate workspace is at /path/to/my-rate-limiter-debate"
 ```
 
@@ -705,7 +705,7 @@ The `README.md` contains this verbatim as the quickstart.
 
 - **Clarifications phase**: Addressed below as a first-class feature (see Section 15).
 
-- **Evaluation**: The TypeScript `eval` command post-evaluates a completed debate. A `skills/evaluate.SKILL.md` could implement this by reading `synthesis.md` and all round files.
+- **Evaluation**: The TypeScript `eval` command post-evaluates a completed debate. A `.cursor/skills/evaluate/SKILL.md` could implement this by reading `synthesis.md` and all round files.
 
 - **Report generation**: The TypeScript `report` command generates a Markdown report from debate state. In the agent-native model, `synthesis.md` serves this role. A dedicated report skill could format a richer report from the debate directory.
 

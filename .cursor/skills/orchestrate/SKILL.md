@@ -6,7 +6,7 @@ You are running a multi-agent design debate. Follow these instructions exactly a
 
 You will be invoked with:
 - `WORKSPACE`: absolute path to the debate workspace directory (contains `problem.md`, optionally `context/` and `debate-config.json`)
-- `PROJECT`: absolute path to the dialectic-agent project directory (contains `skills/`, `prompts/`, `debate-config.json`)
+- `PROJECT`: absolute path to the dialectic-agent project directory (contains `.cursor/skills/`, `prompts/`, `debate-config.json`)
 
 ---
 
@@ -108,7 +108,7 @@ Tell the user:
 
 If `config.clarifications.enabled` is true:
 
-Follow the skill at `{PROJECT}/skills/clarify.SKILL.md`. Pass:
+Follow the skill at `{PROJECT}/.cursor/skills/clarify/SKILL.md`. Pass:
 - `WORKSPACE`, `PROJECT`, `CONFIG`, `PROBLEM_TEXT`, `CONTEXT_FILES`
 
 After the clarification skill completes, `{WORKSPACE}/debate/clarifications/summary.md` will exist.
@@ -155,7 +155,7 @@ Announce: "[Round {ROUND}] Launching proposals in parallel ({N} agents)..."
 
 **Dispatch N subagents in parallel** — one per agent in `config.agents`:
 
-For each agent, invoke a subagent with skill `{PROJECT}/skills/role-agent.SKILL.md` and parameters:
+For each agent, invoke a subagent with skill `{PROJECT}/.cursor/skills/role-agent/SKILL.md` and parameters:
 ```
 AGENT_ID: {agent.id}
 AGENT_NAME: {agent.name}
@@ -221,7 +221,7 @@ Append to progress.md: `## {timestamp} — Round {ROUND} refinements complete`
 
 Announce: "[Round {ROUND}] Judge evaluating convergence..."
 
-**Dispatch one judge subagent** with skill `{PROJECT}/skills/judge.SKILL.md` and parameters:
+**Dispatch one judge subagent** with skill `{PROJECT}/.cursor/skills/judge/SKILL.md` and parameters:
 ```
 MODE: "convergence_check"
 ROUND: {ROUND}
@@ -256,7 +256,7 @@ Otherwise: set `ROUND = ROUND + 1` and continue the loop.
 
 Announce: "[Synthesis] Judge writing final solution..."
 
-**Dispatch one judge subagent** with skill `{PROJECT}/skills/judge.SKILL.md` and parameters:
+**Dispatch one judge subagent** with skill `{PROJECT}/.cursor/skills/judge/SKILL.md` and parameters:
 ```
 MODE: "synthesis"
 ROUND: {ROUND}  (the final round number)

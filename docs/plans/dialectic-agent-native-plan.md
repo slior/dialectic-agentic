@@ -4,7 +4,7 @@
 
 **Goal:** Build a new standalone project `dialectic-agent/` — a multi-agent design debate system implemented entirely as agent skill files, prompt files, and a JSON config, with zero application code required.
 
-**Architecture:** An orchestrator agent reads `skills/orchestrate.SKILL.md` and drives the debate: running an optional clarification phase, then iterating proposal→critique→refinement rounds with N parallel subagents (one per debate role), until a judge subagent signals convergence or a round ceiling is hit. All state is plain files. All prompts are markdown files composed at runtime by the skill instructions.
+**Architecture:** An orchestrator agent reads `.cursor/skills/orchestrate/SKILL.md` and drives the debate: running an optional clarification phase, then iterating proposal→critique→refinement rounds with N parallel subagents (one per debate role), until a judge subagent signals convergence or a round ceiling is hit. All state is plain files. All prompts are markdown files composed at runtime by the skill instructions.
 
 **Tech Stack:** Markdown (SKILL.md skill files, prompt files), JSON (config and state), no code. The system runs on any agentic platform that supports a Task tool for subagent dispatch (Cursor, Claude Code, etc.).
 
@@ -801,7 +801,7 @@ git commit -m "feat: add generalist (judge) prompt files"
 ## Task 11: role-clarify.SKILL.md
 
 **Files:**
-- Create: `dialectic-agent/skills/role-clarify.SKILL.md`
+- Create: `dialectic-agent/.cursor/skills/role-clarify/SKILL.md`
 
 **Context:** This skill is read by a short-lived **subagent** dispatched during the clarification phase. The subagent's job is simple: given a role's persona, the problem, any context files, and accumulated Q&A so far, produce a JSON list of clarifying questions (or an empty list if satisfied). The orchestrator reads the JSON output, presents the questions to the user, and loops.
 
@@ -874,13 +874,13 @@ Write nothing else. The file must contain only valid JSON.
 **Step 2: Verify the file exists**
 
 ```bash
-ls dialectic-agent/skills/role-clarify.SKILL.md
+ls dialectic-agent/.cursor/skills/role-clarify/SKILL.md
 ```
 
 **Step 3: Commit**
 
 ```bash
-git add skills/role-clarify.SKILL.md
+git add .cursor/skills/role-clarify/SKILL.md
 git commit -m "feat: add role-clarify.SKILL.md (clarification question generator subagent)"
 ```
 
@@ -889,7 +889,7 @@ git commit -m "feat: add role-clarify.SKILL.md (clarification question generator
 ## Task 12: clarify.SKILL.md
 
 **Files:**
-- Create: `dialectic-agent/skills/clarify.SKILL.md`
+- Create: `dialectic-agent/.cursor/skills/clarify/SKILL.md`
 
 **Context:** This skill is read by the **orchestrator** (not a subagent) during the clarification phase. It instructs the orchestrator to conduct a back-and-forth clarification conversation with the user. The orchestrator presents questions conversationally, waits for the user's reply (which is just the next chat message), appends Q&A to files, and loops until each agent is satisfied or the cap is hit.
 
@@ -925,7 +925,7 @@ MAX = CONFIG.clarifications.max_iterations_per_agent
 
 LOOP:
   1. Dispatch role-clarify subagent (via Task tool):
-     - Read skill: {PROJECT}/skills/role-clarify.SKILL.md
+     - Read skill: {PROJECT}/.cursor/skills/role-clarify/SKILL.md
      - Pass parameters: AGENT_ID, AGENT_NAME, ROLE, WORKSPACE, PROJECT, CONTEXT_FILES
 
   2. Wait for subagent to complete.
@@ -1008,13 +1008,13 @@ Append to `{WORKSPACE}/debate/progress.md`: a timestamped entry noting clarifica
 **Step 2: Verify**
 
 ```bash
-ls dialectic-agent/skills/clarify.SKILL.md
+ls dialectic-agent/.cursor/skills/clarify/SKILL.md
 ```
 
 **Step 3: Commit**
 
 ```bash
-git add skills/clarify.SKILL.md
+git add .cursor/skills/clarify/SKILL.md
 git commit -m "feat: add clarify.SKILL.md (orchestrator-hosted clarification conversation)"
 ```
 
@@ -1023,7 +1023,7 @@ git commit -m "feat: add clarify.SKILL.md (orchestrator-hosted clarification con
 ## Task 13: role-agent.SKILL.md
 
 **Files:**
-- Create: `dialectic-agent/skills/role-agent.SKILL.md`
+- Create: `dialectic-agent/.cursor/skills/role-agent/SKILL.md`
 
 **Context:** This skill is read by **role subagents** dispatched during the three debate phases: proposal, critique, and refinement. Each subagent invocation handles exactly one role × one phase × one round. The subagent reads its persona, reads its task-specific prompt, reads the relevant input files (problem, previous contributions, critiques), and writes one or more output files.
 
@@ -1153,13 +1153,13 @@ Write complete content before saving. Do not write partial files. Each output fi
 **Step 2: Verify**
 
 ```bash
-ls dialectic-agent/skills/role-agent.SKILL.md
+ls dialectic-agent/.cursor/skills/role-agent/SKILL.md
 ```
 
 **Step 3: Commit**
 
 ```bash
-git add skills/role-agent.SKILL.md
+git add .cursor/skills/role-agent/SKILL.md
 git commit -m "feat: add role-agent.SKILL.md (debate participant subagent)"
 ```
 
@@ -1168,7 +1168,7 @@ git commit -m "feat: add role-agent.SKILL.md (debate participant subagent)"
 ## Task 14: judge.SKILL.md
 
 **Files:**
-- Create: `dialectic-agent/skills/judge.SKILL.md`
+- Create: `dialectic-agent/.cursor/skills/judge/SKILL.md`
 
 **Context:** The judge subagent is invoked after each round's refinement phase (convergence check mode) and once at the end (synthesis mode). In convergence check mode, it reads all refinements and emits a structured JSON verdict. In synthesis mode, it reads the full debate history and writes the final synthesis document.
 
@@ -1292,13 +1292,13 @@ After writing the synthesis, output a brief confirmation:
 **Step 2: Verify**
 
 ```bash
-ls dialectic-agent/skills/judge.SKILL.md
+ls dialectic-agent/.cursor/skills/judge/SKILL.md
 ```
 
 **Step 3: Commit**
 
 ```bash
-git add skills/judge.SKILL.md
+git add .cursor/skills/judge/SKILL.md
 git commit -m "feat: add judge.SKILL.md (convergence evaluator and synthesizer)"
 ```
 
@@ -1307,7 +1307,7 @@ git commit -m "feat: add judge.SKILL.md (convergence evaluator and synthesizer)"
 ## Task 15: orchestrate.SKILL.md
 
 **Files:**
-- Create: `dialectic-agent/skills/orchestrate.SKILL.md`
+- Create: `dialectic-agent/.cursor/skills/orchestrate/SKILL.md`
 
 **Context:** This is the main entry point. The user (or an invoking agent) reads this skill and follows it to run a complete debate. It is the longest and most complex skill file. It drives the entire flow: config loading → clarifications → debate loop → synthesis. It dispatches all subagents and manages all file state. It is the only "agent" that interacts with the user.
 
@@ -1424,7 +1424,7 @@ Tell the user:
 
 If `config.clarifications.enabled` is true:
 
-Follow the skill at `{PROJECT}/skills/clarify.SKILL.md`. Pass:
+Follow the skill at `{PROJECT}/.cursor/skills/clarify/SKILL.md`. Pass:
 - `WORKSPACE`, `PROJECT`, `CONFIG`, `PROBLEM_TEXT`, `CONTEXT_FILES`
 
 After the clarification skill completes, `{WORKSPACE}/debate/clarifications/summary.md` will exist.
@@ -1471,7 +1471,7 @@ Announce: "[Round {ROUND}] Launching proposals in parallel ({N} agents)..."
 
 **Dispatch N subagents in parallel** — one per agent in `config.agents`:
 
-For each agent, invoke a subagent with skill `{PROJECT}/skills/role-agent.SKILL.md` and parameters:
+For each agent, invoke a subagent with skill `{PROJECT}/.cursor/skills/role-agent/SKILL.md` and parameters:
 ```
 AGENT_ID: {agent.id}
 AGENT_NAME: {agent.name}
@@ -1537,7 +1537,7 @@ Append to progress.md: `## {timestamp} — Round {ROUND} refinements complete`
 
 Announce: "[Round {ROUND}] Judge evaluating convergence..."
 
-**Dispatch one judge subagent** with skill `{PROJECT}/skills/judge.SKILL.md` and parameters:
+**Dispatch one judge subagent** with skill `{PROJECT}/.cursor/skills/judge/SKILL.md` and parameters:
 ```
 MODE: "convergence_check"
 ROUND: {ROUND}
@@ -1572,7 +1572,7 @@ Otherwise: set `ROUND = ROUND + 1` and continue the loop.
 
 Announce: "[Synthesis] Judge writing final solution..."
 
-**Dispatch one judge subagent** with skill `{PROJECT}/skills/judge.SKILL.md` and parameters:
+**Dispatch one judge subagent** with skill `{PROJECT}/.cursor/skills/judge/SKILL.md` and parameters:
 ```
 MODE: "synthesis"
 ROUND: {ROUND}  (the final round number)
@@ -1618,13 +1618,13 @@ Announce to the user:
 **Step 2: Verify**
 
 ```bash
-ls dialectic-agent/skills/orchestrate.SKILL.md
+ls dialectic-agent/.cursor/skills/orchestrate/SKILL.md
 ```
 
 **Step 3: Commit**
 
 ```bash
-git add skills/orchestrate.SKILL.md
+git add .cursor/skills/orchestrate/SKILL.md
 git commit -m "feat: add orchestrate.SKILL.md (main entry point)"
 ```
 
@@ -1703,7 +1703,7 @@ cp /path/to/dialectic-agent/debate-config.json ./debate-config.json
 
 Tell your agent:
 
-> "Read and follow the skill at `/path/to/dialectic-agent/skills/orchestrate.SKILL.md`.
+> "Read and follow the skill at `/path/to/dialectic-agent/.cursor/skills/orchestrate/SKILL.md`.
 > The debate workspace is at `/absolute/path/to/my-debate`."
 
 ## Output
@@ -1823,11 +1823,11 @@ dialectic-agent/prompts/testing/critique.md
 dialectic-agent/prompts/testing/proposal.md
 dialectic-agent/prompts/testing/refinement.md
 dialectic-agent/prompts/testing/system.md
-dialectic-agent/skills/clarify.SKILL.md
-dialectic-agent/skills/judge.SKILL.md
-dialectic-agent/skills/orchestrate.SKILL.md
-dialectic-agent/skills/role-agent.SKILL.md
-dialectic-agent/skills/role-clarify.SKILL.md
+dialectic-agent/.cursor/skills/clarify/SKILL.md
+dialectic-agent/.cursor/skills/judge/SKILL.md
+dialectic-agent/.cursor/skills/orchestrate/SKILL.md
+dialectic-agent/.cursor/skills/role-agent/SKILL.md
+dialectic-agent/.cursor/skills/role-clarify/SKILL.md
 ```
 
 **Step 2: Validate JSON files**
@@ -1866,7 +1866,7 @@ EOF
 **Step 4: Run the debate**
 
 Tell your agent:
-> "Read and follow the skill at `{absolute path to dialectic-agent}/skills/orchestrate.SKILL.md`. The debate workspace is at `/tmp/test-debate`."
+> "Read and follow the skill at `{absolute path to dialectic-agent}/.cursor/skills/orchestrate/SKILL.md`. The debate workspace is at `/tmp/test-debate`."
 
 **Step 5: Verify outputs**
 
@@ -1922,11 +1922,11 @@ git commit -m "feat: complete dialectic-agent-native project"
 | 8 | `prompts/testing/{system,proposal,critique,refinement}.md` (4 files) |
 | 9 | `prompts/datamodeling/{system,proposal,critique,refinement}.md` (4 files) |
 | 10 | `prompts/generalist/{system,synthesize}.md` (2 files) |
-| 11 | `skills/role-clarify.SKILL.md` |
-| 12 | `skills/clarify.SKILL.md` |
-| 13 | `skills/role-agent.SKILL.md` |
-| 14 | `skills/judge.SKILL.md` |
-| 15 | `skills/orchestrate.SKILL.md` |
+| 11 | `.cursor/skills/role-clarify/SKILL.md` |
+| 12 | `.cursor/skills/clarify/SKILL.md` |
+| 13 | `.cursor/skills/role-agent/SKILL.md` |
+| 14 | `.cursor/skills/judge/SKILL.md` |
+| 15 | `.cursor/skills/orchestrate/SKILL.md` |
 | 16 | `README.md` |
 | 17 | Validation only |
 

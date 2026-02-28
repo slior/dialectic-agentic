@@ -63,7 +63,7 @@ cp /path/to/dialectic-agent/debate-config.json ./debate-config.json
 
 Tell your agent:
 
-> "Read and follow the skill at `/path/to/dialectic-agent/skills/orchestrate.SKILL.md`.
+> "Read and follow the skill at `/path/to/dialectic-agent/.cursor/skills/orchestrate/SKILL.md`.
 > The debate workspace is at `/absolute/path/to/my-debate`."
 
 ## Output
