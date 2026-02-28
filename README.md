@@ -59,12 +59,21 @@ cp /path/to/dialectic-agent/debate-config.json ./debate-config.json
 # Edit to change agents, convergence settings, or tools
 ```
 
+Or generate one interactively:
+
+```bash
+/path/to/dialectic-agent/scripts/create-debate-config.sh
+```
+
 **6. Invoke the orchestrator in your agent:**
 
 Tell your agent:
 
 > "Read and follow the skill at `/path/to/dialectic-agent/.cursor/skills/orchestrate/SKILL.md`.
-> The debate workspace is at `/absolute/path/to/my-debate`."
+> The debate workspace is at `/absolute/path/to/my-debate`.
+> Optionally, use `DEBATE_CONFIG=/absolute/path/to/debate-config.json`."
+
+If `DEBATE_CONFIG` is provided but invalid, the orchestrator asks whether to create a config now. If you decline, it stops. If you accept, it runs the interactive config generator and uses the resulting file for the debate.
 
 ## Output
 

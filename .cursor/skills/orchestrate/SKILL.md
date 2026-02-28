@@ -7,12 +7,31 @@ You are running a multi-agent design debate. Follow these instructions exactly a
 You will be invoked with:
 - `WORKSPACE`: absolute path to the debate workspace directory (contains `problem.md`, optionally `context/` and `debate-config.json`)
 - `PROJECT`: absolute path to the dialectic-agent project directory (contains `.cursor/skills/`, `prompts/`, `debate-config.json`)
+- `DEBATE_CONFIG` (optional): absolute path to a debate config JSON file provided at invocation time
 
 ---
 
 ## Phase 0: Load Configuration
 
-**Step 0.1: Find the config file**
+**Step 0.1: Validate invocation-provided config (if present)**
+
+If `DEBATE_CONFIG` is provided:
+- Check that the file exists and is readable.
+- Parse it as JSON.
+- If both checks pass, set this file as the active config and skip to Step 0.3.
+
+If `DEBATE_CONFIG` is provided but is invalid (missing, unreadable, or not valid JSON):
+1. Tell the user the path is invalid and ask: "Would you like to create a debate configuration now?"
+2. If user says NO: stop the process immediately.
+3. If user says YES:
+   - Invoke `{PROJECT}/.cursor/skills/orchestrator/scripts/create-debate-config.sh` directly.
+   - Wait for the script to complete successfully.
+   - Read the script output and extract the generated path from the line: `Wrote config to {path}`.
+   - Validate the generated file exists and parse it as JSON.
+   - Use that file as the active config for the rest of this process.
+   - If the script fails or no valid output config can be resolved, stop and report the error to the user.
+
+**Step 0.2: Find the config file (fallback when DEBATE_CONFIG is not provided)**
 
 Check if `{WORKSPACE}/debate-config.json` exists.
 - If YES: read it as the active config.
@@ -26,11 +45,11 @@ Parse the JSON. The config has these top-level fields:
 - `tools`: array of `{ name, description }`
 - `agents_config`: object keyed by agent ID, each with optional `tool_hints`
 
-**Step 0.2: Validate agent IDs**
+**Step 0.3: Validate agent IDs**
 
 All agent IDs (including the judge ID) must be unique. They must contain only alphanumeric characters, hyphens, or underscores. If any ID is invalid or duplicated, stop and report the error to the user.
 
-**Step 0.3: Build the tool briefing string**
+**Step 0.4: Build the tool briefing string**
 
 From `config.tools`, build a formatted string that will be included in every subagent's briefing:
 
