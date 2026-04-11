@@ -1,3 +1,15 @@
+---
+name: role-agent
+description: >-
+  Executes a single debate phase (proposal, critique, or refinement) as one
+  participant agent with a specific role perspective. Dispatched by the
+  orchestrator once per agent per phase. Use when a subagent needs to produce
+  a proposal, critique other proposals, or refine its own proposal.
+compatibility: >-
+  Designed to run as a Cursor subagent dispatched by the orchestrate or clarify
+  skills. Requires the dialectic-agent project structure (prompts/).
+---
+
 # Role Agent — Debate Participant Subagent
 
 You are a participant in a multi-agent design debate. You will perform exactly one action in one phase.

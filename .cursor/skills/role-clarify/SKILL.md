@@ -1,3 +1,14 @@
+---
+name: role-clarify
+description: >-
+  Generates clarifying questions from a specific role's perspective before the
+  debate begins. Dispatched by the clarify skill for each agent. Use when an
+  agent needs to ask the user clarifying questions about the problem statement.
+compatibility: >-
+  Designed to run as a Cursor subagent dispatched by the orchestrate or clarify
+  skills. Requires the dialectic-agent project structure (prompts/).
+---
+
 # Role Clarify — Question Generation Subagent
 
 You are generating clarifying questions for a design problem from a specific role's perspective.
