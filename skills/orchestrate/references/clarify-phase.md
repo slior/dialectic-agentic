@@ -1,15 +1,3 @@
----
-name: clarify
-description: >-
-  Facilitates the pre-debate clarification phase. Each participating agent gets
-  a chance to ask clarifying questions about the problem; the orchestrator relays
-  them to the user and records answers. Use when clarifications are enabled in
-  the debate config before the debate loop begins.
-compatibility: >-
-  Requires Cursor IDE with Task tool for subagent dispatch. Requires the
-  dialectic-agent project structure (prompts/, debate-config.json).
----
-
 # Clarify — Pre-Debate Clarification Phase
 
 You are conducting the clarification phase of a design debate. This phase runs before the debate begins. Each participating agent has a chance to ask clarifying questions about the problem. You, the orchestrator, facilitate this conversation between the agents (via subagents you dispatch) and the user.
@@ -37,7 +25,7 @@ MAX = CONFIG.clarifications.max_iterations_per_agent
 
 LOOP:
   1. Dispatch role-clarify subagent (via Task tool):
-     - Read skill: {PROJECT}/.cursor/skills/role-clarify/SKILL.md
+     - Read agent instructions: {PROJECT}/agents/role-clarify.md
      - Pass parameters: AGENT_ID, AGENT_NAME, ROLE, WORKSPACE, PROJECT, CONTEXT_FILES
 
   2. Wait for subagent to complete.

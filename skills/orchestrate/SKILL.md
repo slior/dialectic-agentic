@@ -18,7 +18,7 @@ You are running a multi-agent design debate. Follow these instructions exactly a
 
 You will be invoked with:
 - `WORKSPACE`: absolute path to the debate workspace directory (contains `problem.md`, optionally `context/` and `debate-config.json`)
-- `PROJECT`: absolute path to the dialectic-agent project directory (contains `.cursor/skills/`, `prompts/`, `debate-config.json`)
+- `PROJECT` (optional): absolute path to the dialectic-agent project directory (contains `skills/`, `agents/`, `prompts/`, `debate-config.json`). If omitted, Phase 0.0 self-locates the installed plugin root.
 - `DEBATE_CONFIG` (optional): absolute path to a debate config JSON file provided at invocation time
 
 ## Example Invocation
@@ -30,6 +30,35 @@ DEBATE_CONFIG: /Users/me/projects/cache-redesign/debate-config.json
 ```
 
 This runs a debate on the problem defined in `/Users/me/projects/cache-redesign/problem.md`, using the config at the specified path. Context files, if any, are read from `/Users/me/projects/cache-redesign/context/`. If `DEBATE_CONFIG` is omitted, the skill falls back to `{WORKSPACE}/debate-config.json` and then `{PROJECT}/debate-config.json`.
+
+---
+
+## Phase 0.0: Resolve PLUGIN_ROOT
+
+Resolve `PROJECT` as follows:
+- If the `PROJECT` parameter was supplied at invocation: set `PROJECT` to that value and skip the rest of this phase. Do not overwrite the user's choice.
+- Otherwise, continue with self-location.
+
+For self-location, you just read this SKILL.md from an absolute path. Let that path be SKILL_PATH.
+Compute CANDIDATE_ROOT by removing the trailing `/skills/orchestrate/SKILL.md`
+from SKILL_PATH.
+
+Verify that all of the following exist under CANDIDATE_ROOT:
+- `prompts/shared/system.md`
+- `prompts/generalist/system.md`
+- `debate-config.json`
+
+If all three paths above exist under `CANDIDATE_ROOT`: set `PROJECT = CANDIDATE_ROOT`.
+
+Otherwise, stop and print to the user, verbatim:
+
+  > I could not locate the dialectic plugin files automatically. Re-invoke this skill and include the parameter:
+  >
+  >   `PROJECT=<absolute path to the installed plugin or to a clone of the dialectic-agentic repository>`
+  >
+  > For example: `PROJECT=/Users/you/.cursor/plugins/local/dialectic`
+
+For all downstream phases and every subagent you dispatch, pass `PROJECT` as a parameter exactly as set above.
 
 ---
 
@@ -46,7 +75,7 @@ If `DEBATE_CONFIG` is provided but is invalid (missing, unreadable, or not valid
 1. Tell the user the path is invalid and ask: "Would you like to create a debate configuration now?"
 2. If user says NO: stop the process immediately.
 3. If user says YES:
-   - Invoke `{PROJECT}/.cursor/skills/orchestrate/scripts/create-debate-config.sh` directly.
+   - Invoke `{PROJECT}/skills/orchestrate/scripts/create-debate-config.sh` directly.
    - Wait for the script to complete successfully.
    - Read the script output and extract the generated path from the line: `Wrote config to {path}`.
    - Validate the generated file exists and parse it as JSON.
