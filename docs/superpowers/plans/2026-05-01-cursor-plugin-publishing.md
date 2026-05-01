@@ -836,14 +836,42 @@ No code changes in this task — this is acceptance testing. All steps must pass
 
 **Files:** none created or modified.
 
-- [ ] **Step 8.1: Symlink the repo as a local Cursor plugin**
+Contributor reference for local installs + the symlink-vs-copy troubleshooting note:
+[`docs/development.md`](../../development.md).
+
+- [ ] **Step 8.1: Install the repo into Cursor’s local plugin directory**
+
+Cursor loads user-local plugins from `~/.cursor/plugins/local/<name>/` (see [Plugins — Test plugins locally](https://cursor.com/docs/plugins.md)).
+
+Try the documented symlink approach first (fast iteration):
 
 ```bash
 mkdir -p ~/.cursor/plugins/local
 ln -sfn /Users/liors/dev/dialectic-agent ~/.cursor/plugins/local/dialectic
-ls -l ~/.cursor/plugins/local/dialectic
+ls -la ~/.cursor/plugins/local/dialectic/.cursor-plugin/plugin.json
 ```
-Expected: a symlink resolving to `/Users/liors/dev/dialectic-agent`.
+
+Expected:
+
+- `plugin.json` exists at `~/.cursor/plugins/local/dialectic/.cursor-plugin/plugin.json`.
+
+**If local plugins do not load via symlink** (common symptom: `loadUserLocalPlugins ... (0 plugins loaded)` in the *Cursor Plugins* output log even after reload), fall back to a filesystem mirror (no symlink indirection):
+
+```bash
+rm -rf ~/.cursor/plugins/local/dialectic
+mkdir -p ~/.cursor/plugins/local/dialectic
+rsync -a --delete \
+  --exclude '.git/' \
+  --exclude '.DS_Store' \
+  --exclude '.obsidian/' \
+  /Users/liors/dev/dialectic-agent/ \
+  ~/.cursor/plugins/local/dialectic/
+ls -la ~/.cursor/plugins/local/dialectic/.cursor-plugin/plugin.json
+```
+
+Expected:
+
+- Same `plugin.json` path exists, but `~/.cursor/plugins/local/dialectic` is a normal directory (not a symlink).
 
 - [ ] **Step 8.2: Reload Cursor**
 
