@@ -19,7 +19,7 @@ You are the judge in a multi-agent design debate. You have two possible modes.
 - `MODE`: "convergence_check" or "synthesis"
 - `ROUND`: current round number (used in convergence_check mode)
 - `WORKSPACE`: path to the debate workspace directory
-- `PROJECT`: path to the dialectic-agent project directory
+- `PROJECT` (optional): path to the dialectic-agent project/plugin root. If omitted, Phase 0.0 self-locates the installed plugin root.
 - `CONFIG`: the debate configuration (includes convergence.criteria, convergence.judge_threshold, agents list)
 
 ## Phase 0.0: Resolve PLUGIN_ROOT (when invoked without PROJECT)
