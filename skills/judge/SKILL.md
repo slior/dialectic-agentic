@@ -22,6 +22,26 @@ You are the judge in a multi-agent design debate. You have two possible modes.
 - `PROJECT`: path to the dialectic-agent project directory
 - `CONFIG`: the debate configuration (includes convergence.criteria, convergence.judge_threshold, agents list)
 
+## Phase 0.0: Resolve PLUGIN_ROOT (when invoked without PROJECT)
+
+If the `PROJECT` parameter was supplied at invocation, skip this phase and proceed to Step 1.
+
+Otherwise, let `SKILL_PATH` be the absolute path you just loaded this SKILL.md from. Compute `CANDIDATE_ROOT` by removing the trailing `/skills/judge/SKILL.md` from `SKILL_PATH`.
+
+Verify that both of the following exist under `CANDIDATE_ROOT`:
+- `prompts/shared/system.md`
+- `prompts/generalist/system.md`
+
+If both exist, set `PROJECT = CANDIDATE_ROOT`. Otherwise, stop and print to the user, verbatim:
+
+> I could not locate the dialectic plugin files automatically. Re-invoke this skill and include the parameter:
+>
+>   `PROJECT=<absolute path to the installed plugin or to a clone of the dialectic-agentic repository>`
+>
+> For example: `PROJECT=/Users/you/.cursor/plugins/local/dialectic`
+
+---
+
 ## Step 1: Establish Your Identity
 
 Read:
