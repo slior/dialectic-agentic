@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Configuration-first multi-agent design debate. Agents with different roles (architect, security, performance, simplicity, ...) run structured debate rounds and a judge decides when convergence is reached.",
   "author": {
-    "name": "Lior S."
+    "name": "Lior Schejter"
   },
   "homepage": "https://github.com/slior/dialectic-agentic",
   "repository": "https://github.com/slior/dialectic-agentic",
