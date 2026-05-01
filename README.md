@@ -47,19 +47,15 @@ EOF
 
 ```bash
 mkdir context
-cp existing-architecture.md context/
-cp api-spec.json context/
+cp /path/to/existing-architecture.md context/
+cp /path/to/api-spec.json context/
 ```
 
 **4. (Optional) Override the debate configuration:**
 
-The plugin ships with a default `debate-config.json`. If you want to change agents, convergence settings, or tools for this debate only, create a workspace-local override:
+Most users can skip this step. The plugin ships with a default `debate-config.json`. If you want to change agents, convergence settings, or tools for this debate only, create a workspace-local `debate-config.json` using the shipped `debate-config.json` as a template.
 
-```bash
-cat > debate-config.json << 'EOF'
-# ...your overrides here...
-EOF
-```
+The workspace-local override must be valid JSON. Do not create a placeholder or non-JSON `debate-config.json`; the orchestrator parses `{WORKSPACE}/debate-config.json` as JSON when it exists.
 
 Or generate one interactively (when running the legacy clone-and-reference flow):
 
