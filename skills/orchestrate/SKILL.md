@@ -35,7 +35,11 @@ This runs a debate on the problem defined in `/Users/me/projects/cache-redesign/
 
 ## Phase 0.0: Resolve PLUGIN_ROOT
 
-You just read this SKILL.md from an absolute path. Let that path be SKILL_PATH.
+Resolve `PROJECT` as follows:
+- If the `PROJECT` parameter was supplied at invocation: set `PROJECT` to that value and skip the rest of this phase. Do not overwrite the user's choice.
+- Otherwise, continue with self-location.
+
+For self-location, you just read this SKILL.md from an absolute path. Let that path be SKILL_PATH.
 Compute CANDIDATE_ROOT by removing the trailing `/skills/orchestrate/SKILL.md`
 from SKILL_PATH.
 
@@ -44,10 +48,9 @@ Verify that all of the following exist under CANDIDATE_ROOT:
 - `prompts/generalist/system.md`
 - `debate-config.json`
 
-Resolve `PROJECT` as follows:
-- If the `PROJECT` parameter was supplied at invocation: set `PROJECT` to that value and skip the rest of this phase. Do not overwrite the user's choice.
-- Else if all three paths above exist under `CANDIDATE_ROOT`: set `PROJECT = CANDIDATE_ROOT`.
-- Otherwise, stop and print to the user, verbatim:
+If all three paths above exist under `CANDIDATE_ROOT`: set `PROJECT = CANDIDATE_ROOT`.
+
+Otherwise, stop and print to the user, verbatim:
 
   > I could not locate the dialectic plugin files automatically. Re-invoke this skill and include the parameter:
   >
