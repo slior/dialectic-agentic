@@ -33,6 +33,32 @@ This runs a debate on the problem defined in `/Users/me/projects/cache-redesign/
 
 ---
 
+## Phase 0.0: Resolve PLUGIN_ROOT
+
+You just read this SKILL.md from an absolute path. Let that path be SKILL_PATH.
+Compute CANDIDATE_ROOT by removing the trailing `/skills/orchestrate/SKILL.md`
+from SKILL_PATH.
+
+Verify that all of the following exist under CANDIDATE_ROOT:
+- `prompts/shared/system.md`
+- `prompts/generalist/system.md`
+- `debate-config.json`
+
+Resolve `PROJECT` as follows:
+- If the `PROJECT` parameter was supplied at invocation: set `PROJECT` to that value and skip the rest of this phase. Do not overwrite the user's choice.
+- Else if all three paths above exist under `CANDIDATE_ROOT`: set `PROJECT = CANDIDATE_ROOT`.
+- Otherwise, stop and print to the user, verbatim:
+
+  > I could not locate the dialectic plugin files automatically. Re-invoke this skill and include the parameter:
+  >
+  >   `PROJECT=<absolute path to the installed plugin or to a clone of the dialectic-agentic repository>`
+  >
+  > For example: `PROJECT=/Users/you/.cursor/plugins/local/dialectic`
+
+For all downstream phases and every subagent you dispatch, pass `PROJECT` as a parameter exactly as set above.
+
+---
+
 ## Phase 0: Load Configuration
 
 **Step 0.1: Validate invocation-provided config (if present)**
