@@ -18,7 +18,7 @@ You are running a multi-agent design debate. Follow these instructions exactly a
 
 You will be invoked with:
 - `WORKSPACE`: absolute path to the debate workspace directory (contains `problem.md`, optionally `context/` and `debate-config.json`)
-- `PROJECT`: absolute path to the dialectic-agent project directory (contains `.cursor/skills/`, `prompts/`, `debate-config.json`)
+- `PROJECT`: absolute path to the dialectic-agent project directory (contains `skills/`, `agents/`, `prompts/`, `debate-config.json`)
 - `DEBATE_CONFIG` (optional): absolute path to a debate config JSON file provided at invocation time
 
 ## Example Invocation
@@ -46,7 +46,7 @@ If `DEBATE_CONFIG` is provided but is invalid (missing, unreadable, or not valid
 1. Tell the user the path is invalid and ask: "Would you like to create a debate configuration now?"
 2. If user says NO: stop the process immediately.
 3. If user says YES:
-   - Invoke `{PROJECT}/.cursor/skills/orchestrate/scripts/create-debate-config.sh` directly.
+   - Invoke `{PROJECT}/skills/orchestrate/scripts/create-debate-config.sh` directly.
    - Wait for the script to complete successfully.
    - Read the script output and extract the generated path from the line: `Wrote config to {path}`.
    - Validate the generated file exists and parse it as JSON.
