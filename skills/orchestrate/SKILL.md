@@ -18,7 +18,7 @@ You are running a multi-agent design debate. Follow these instructions exactly a
 
 You will be invoked with:
 - `WORKSPACE`: absolute path to the debate workspace directory (contains `problem.md`, optionally `context/` and `debate-config.json`)
-- `PROJECT`: absolute path to the dialectic-agent project directory (contains `skills/`, `agents/`, `prompts/`, `debate-config.json`)
+- `PROJECT` (optional): absolute path to the dialectic-agent project directory (contains `skills/`, `agents/`, `prompts/`, `debate-config.json`). If omitted, Phase 0.0 self-locates the installed plugin root.
 - `DEBATE_CONFIG` (optional): absolute path to a debate config JSON file provided at invocation time
 
 ## Example Invocation
