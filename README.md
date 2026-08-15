@@ -10,9 +10,23 @@ The entire system is driven by an agent following skill files. State lives in pl
 
 ## Install
 
+Dialectic ships as an [Agent Plugin](https://agent-plugins.org) targeting specification version 1.0.0: a self-contained directory with a `plugin.json` manifest at its root and its skills under `skills/`. Any client that implements the standard can discover and load it without modification.
+
+Loading is not the same as running, though. A debate is built entirely on subagent dispatch, and the Agent Plugins standard does not define a subagent mechanism — so Dialectic needs a client that has one. Cursor is the first-class target and needs no configuration. On a client that does not tell a skill the path it was loaded from, pass `PROJECT=/absolute/path/to/the/plugin` when you invoke the skill; see [Legacy: clone-and-reference flow](#legacy-clone-and-reference-flow). `PROJECT` is the Dialectic plugin directory (the folder that contains `prompts/`, `agents/`, and `debate-config.json`), not the repo you are debating — that repo, or the debate folder inside it, is `WORKSPACE`.
+
 ### From the Cursor Marketplace (recommended)
 
 Search for **Dialectic** in the Cursor Marketplace and install it. Cursor handles the files; no cloning, no path setup.
+
+### From a clone
+
+Clone the repository into your client's local plugin directory and reload the client. For Cursor:
+
+```bash
+git clone https://github.com/slior/dialectic-agentic.git ~/.cursor/plugins/local/dialectic
+```
+
+Then run **Developer: Reload Window**. See [`docs/development.md`](docs/development.md) for the full local-install, validation, and troubleshooting guide.
 
 ### Prerequisites
 
@@ -69,7 +83,7 @@ In Cursor, ask the agent:
 
 > "Run the dialectic debate. `WORKSPACE=/absolute/path/to/my-debate`."
 
-The `orchestrate` skill (installed by the plugin) self-locates the plugin root and runs the full debate. If you also want to use a workspace-specific config path, also pass `DEBATE_CONFIG=/absolute/path/to/debate-config.json`.
+The `orchestrate` skill (installed by the plugin) self-locates the plugin root and runs the full debate. Do not pass `PROJECT` unless that self-location fails; if you must, it is the plugin directory, not this workspace. If you also want to use a workspace-specific config path, also pass `DEBATE_CONFIG=/absolute/path/to/debate-config.json`.
 
 ## Output
 
@@ -134,7 +148,7 @@ Agent IDs must be unique across all agents and the judge. Use alphanumeric chara
 
 ## Legacy: clone-and-reference flow
 
-If you want to hack on the plugin directly without installing it, clone the repo and pass `PROJECT=/absolute/path` at invocation:
+If you want to hack on the plugin directly without installing it, clone the repo and pass `PROJECT` at invocation. `PROJECT` is this clone — the Dialectic plugin root — not the application repo you are debating (`WORKSPACE`):
 
 ```bash
 git clone https://github.com/slior/dialectic-agentic.git /path/to/dialectic-agentic

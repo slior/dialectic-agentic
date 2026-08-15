@@ -6,8 +6,11 @@ description: >-
   (per-round verdict) and synthesis (final output). Use when the orchestrator
   needs a convergence verdict or a final synthesis document.
 compatibility: >-
-  Requires Cursor IDE with Task tool for subagent dispatch. Requires the
-  dialectic-agent project structure (prompts/, debate-config.json).
+  Requires the prompt payload that ships beside this skill (prompts/shared/,
+  prompts/generalist/), which the skill resolves from its own location; pass PROJECT=<plugin
+  root> on clients that do not expose a skill's own path. Needs no subagent dispatch of its
+  own: it only reads and writes files, and is usually run as a subagent dispatched by the
+  orchestrate skill.
 ---
 
 # Judge — Convergence Evaluator and Synthesizer

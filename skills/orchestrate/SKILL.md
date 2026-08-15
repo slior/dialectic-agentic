@@ -6,8 +6,11 @@ description: >-
   critique, refinement), dispatches the judge for convergence checks, and writes
   the final synthesis. Use when the user wants to start or run a design debate.
 compatibility: >-
-  Requires Cursor IDE with Task tool for subagent dispatch. Requires the
-  dialectic-agent project structure (prompts/, debate-config.json).
+  Requires a client that can dispatch subagents: every proposal, critique, refinement,
+  clarification, and judge invocation runs as a dispatched subagent. Also requires the plugin
+  payload that ships beside this skill (prompts/, agents/, debate-config.json), which the skill
+  resolves from its own location; pass PROJECT=<plugin root> on clients that do not expose a
+  skill's own path.
 ---
 
 # Dialectic Debate Orchestrator

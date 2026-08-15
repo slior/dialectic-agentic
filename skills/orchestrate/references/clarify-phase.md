@@ -24,8 +24,9 @@ ITERATION = 0
 MAX = CONFIG.clarifications.max_iterations_per_agent
 
 LOOP:
-  1. Dispatch role-clarify subagent (via Task tool):
-     - Read agent instructions: {PROJECT}/agents/role-clarify.md
+  1. Dispatch a general-purpose subagent for this agent's clarification turn:
+     - Read {PROJECT}/agents/role-clarify.md and pass its contents as the subagent's
+       instructions. Do not depend on a client-registered subagent type named `role-clarify`.
      - Pass parameters: AGENT_ID, AGENT_NAME, ROLE, WORKSPACE, PROJECT, CONTEXT_FILES
 
   2. Wait for subagent to complete.

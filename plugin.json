@@ -1,6 +1,7 @@
 {
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "dialectic",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Configuration-first multi-agent design debate. Agents with different roles (architect, security, performance, simplicity, ...) run structured debate rounds and a judge decides when convergence is reached.",
   "author": {
     "name": "Lior Schejter"

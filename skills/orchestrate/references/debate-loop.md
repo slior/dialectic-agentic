@@ -55,7 +55,7 @@ Announce: "[Round {ROUND}] Launching proposals in parallel ({N} agents)..."
 
 **Dispatch N subagents in parallel** — one per agent in `config.agents`:
 
-For each agent, invoke a subagent with agent instructions `{PROJECT}/agents/role-agent.md` and parameters:
+For each agent, dispatch a general-purpose subagent whose instructions are the **contents** of `{PROJECT}/agents/role-agent.md`. Read that file and pass its text to the subagent; do not depend on a client-registered subagent type named `role-agent`. Pass these parameters:
 ```
 AGENT_ID: {agent.id}
 AGENT_NAME: {agent.name}

@@ -8,9 +8,20 @@ if [ -n "${ZSH_VERSION:-}" ]; then
   setopt SH_WORD_SPLIT
 fi
 
-# Resolve project paths from script location.
-PROJECT_ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/../../../.." && pwd)"
+# Resolve the plugin root from this script's location:
+# scripts/ -> orchestrate/ -> skills/ -> plugin root.
+PROJECT_ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)"
 PROMPTS_DIR="$PROJECT_ROOT/prompts"
+
+if [ ! -d "$PROMPTS_DIR" ] || [ ! -f "$PROJECT_ROOT/debate-config.json" ]; then
+  printf 'Cannot locate the plugin root from this script.\n' >&2
+  printf '  script:        %s\n' "$0" >&2
+  printf '  resolved root: %s\n' "$PROJECT_ROOT" >&2
+  printf 'Expected both %s/prompts/ and %s/debate-config.json to exist.\n' \
+    "$PROJECT_ROOT" "$PROJECT_ROOT" >&2
+  printf 'Run the script from its packaged location, skills/orchestrate/scripts/.\n' >&2
+  exit 1
+fi
 
 # Canonical tool names used in generated config and hints.
 TOOL_NAME_WEB_SEARCH="Web Search"
